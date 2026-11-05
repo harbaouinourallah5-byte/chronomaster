@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChronoMaster — Study Skill | Yassmine Guizani</title>
+  <meta name="description" content="Application de productivité et de gestion du temps pour démonstration live — Matrice d'Eisenhower, Règle 80/20 Pareto, Pomodoro intelligent, Objectifs SMART et Time-Blocking.">
+  
+  <!-- Favicon SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2226%22>⏱️</text></svg>">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            },
+            eisenhower: {
+              q1: '#ef4444',
+              q2: '#10b981',
+              q3: '#f59e0b',
+              q4: '#64748b',
+            }
+          },
+          animation: {
+            'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-soft': 'bounce 2s infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+  <!-- Top Announcement / Live Classroom Badge Banner -->
+  <div class="bg-gradient-to-r from-brand-900 via-indigo-950 to-purple-950 border-b border-brand-500/20 text-xs py-1.5 px-4 text-center text-slate-300 flex items-center justify-between shadow-sm">
+    <div class="flex items-center space-x-2 mx-auto sm:mx-0">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 animate-pulse">
+        ● Démo Live en Direct
+      </span>
+      <span class="font-medium text-slate-200">Study Skill — Gestion du Temps & Efficacité Personnelle</span>
+      <span class="hidden md:inline text-slate-400">| Présenté par <strong class="text-white">Yassmine Guizani</strong></span>
+    </div>
+    <div class="hidden sm:flex items-center space-x-3 text-xs">
+      <button id="btn-theme-toggle" class="hover:text-white flex items-center gap-1 transition" title="Basculer thème Clair/Sombre">
+        <i data-lucide="sun-moon" class="w-3.5 h-3.5"></i>
+        <span>Thème</span>
+      </button>
+      <span>•</span>
+      <button id="btn-open-guide" class="hover:text-brand-300 font-semibold flex items-center gap-1 transition text-purple-300">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span>Guide Méthodes & Théories</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        
+        <!-- App Title & Identity -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-brand-500/25 ring-2 ring-white/10">
+              <i data-lucide="timer" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h1 class="text-xl sm:text-2xl font-black font-display tracking-tight text-white flex items-center gap-2">
+                  ChronoMaster
+                  <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-brand-500/20 text-brand-300 border border-brand-500/30">Pro 2.0</span>
+                </h1>
+              </div>
+              <p class="text-xs text-slate-400 font-medium">
+                Study Skill — <span class="text-brand-300 font-semibold">Yassmine Guizani</span> • Live Workshop Edition
+              </p>
+            </div>
+          </div>
+
+          <!-- Mobile Actions -->
+          <div class="flex items-center space-x-2 lg:hidden">
+            <button id="btn-open-guide-mobile" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white" title="Guide">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
+            </button>
+            <button id="btn-fullscreen-mobile" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white" title="Plein écran">
+              <i data-lucide="maximize" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1-Click Profile Preset Switcher (Module 4) -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-slate-950/70 p-1.5 rounded-2xl border border-slate-800 shadow-inner">
+          <div class="flex items-center space-x-1.5 px-2 text-xs font-semibold text-slate-400">
+            <i data-lucide="users" class="w-4 h-4 text-brand-400"></i>
+            <span class="whitespace-nowrap">Scénarios Démo :</span>
+          </div>
+          <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-1 w-full sm:w-auto" id="profile-selector-container">
+            <button data-profile="etudiant" class="profile-btn active px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5">
+              <span>🎓</span>
+              <span>Étudiant</span>
+            </button>
+            <button data-profile="employe" class="profile-btn px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5">
+              <span>💼</span>
+              <span>Employé</span>
+            </button>
+            <button data-profile="entrepreneur" class="profile-btn px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5">
+              <span>🚀</span>
+              <span>Entrepreneur</span>
+            </button>
+            <button data-profile="parent" class="profile-btn px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5">
+              <span>👨‍👩‍👧</span>
+              <span>Parent / Perso</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Control Actions -->
+        <div class="hidden lg:flex items-center space-x-2">
+          <button id="btn-fullscreen" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700/60 flex items-center gap-1.5 transition" title="Mode Plein Écran pour la projection">
+            <i data-lucide="maximize-2" class="w-4 h-4"></i>
+            <span>Projection</span>
+          </button>
+          <button id="btn-reset-data" class="px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-rose-950/40 hover:text-rose-300 text-slate-300 text-xs font-medium border border-slate-700/60 flex items-center gap-1.5 transition" title="Réinitialiser les données au profil initial">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            <span>Reset</span>
+          </button>
+          <button id="btn-print-summary" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-md shadow-brand-500/20 flex items-center gap-1.5 transition" title="Imprimer ou exporter le bilan">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>Bilan PDF</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Quick KPI & Pareto Banner Bar -->
+      <div class="mt-3 pt-3 border-t border-slate-800/80 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+        <div class="flex items-center space-x-2 bg-slate-950/40 px-3 py-1.5 rounded-lg border border-slate-800">
+          <span class="w-2.5 h-2.5 rounded-full bg-brand-500 animate-ping"></span>
+          <span class="text-slate-400">Tâche Pomodoro liée :</span>
+          <span id="kpi-active-task" class="font-semibold text-white truncate max-w-[150px] sm:max-w-[200px]">Aucune sélectionnée</span>
+        </div>
+        <div class="flex items-center justify-between bg-slate-950/40 px-3 py-1.5 rounded-lg border border-slate-800">
+          <span class="text-slate-400 flex items-center gap-1">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+            Pareto 80/20 :
+          </span>
+          <span id="kpi-pareto-count" class="font-bold text-amber-300">0 tâches clés</span>
+        </div>
+        <div class="flex items-center justify-between bg-slate-950/40 px-3 py-1.5 rounded-lg border border-slate-800">
+          <span class="text-slate-400 flex items-center gap-1">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Zone Q2 (Planifié) :
+          </span>
+          <span id="kpi-q2-ratio" class="font-bold text-emerald-300">0%</span>
+        </div>
+        <div class="flex items-center justify-between bg-slate-950/40 px-3 py-1.5 rounded-lg border border-slate-800">
+          <span class="text-slate-400 flex items-center gap-1">
+            <i data-lucide="flame" class="w-3.5 h-3.5 text-rose-400"></i>
+            Cycles finis aujourd'hui :
+          </span>
+          <span id="kpi-pomodoro-count" class="font-bold text-rose-300">0 session(s)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Sub-Header Navigation Tabs -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-3">
+      <div class="flex items-center space-x-2 overflow-x-auto pb-1 max-w-full">
+        <button data-tab="all" class="nav-tab active px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Tableau de Bord Complet</span>
+        </button>
+        <button data-tab="eisenhower" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+          <i data-lucide="grid" class="w-4 h-4 text-emerald-400"></i>
+          <span>1. Matrice Eisenhower & Pareto</span>
+        </button>
+        <button data-tab="pomodoro" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+          <i data-lucide="timer" class="w-4 h-4 text-rose-400"></i>
+          <span>2. Minuteur Pomodoro</span>
+        </button>
+        <button data-tab="smart" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+          <i data-lucide="target" class="w-4 h-4 text-indigo-400"></i>
+          <span>3. Objectifs SMART</span>
+        </button>
+        <button data-tab="timeblocking" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+          <i data-lucide="calendar" class="w-4 h-4 text-amber-400"></i>
+          <span>4. Journée Type & Eat The Frog</span>
+        </button>
+      </div>
+
+      <!-- Quick Action: New Task / Goal button -->
+      <div class="flex items-center space-x-2">
+        <button id="btn-quick-add-task" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-medium text-xs sm:text-sm flex items-center gap-1.5 shadow-lg shadow-brand-600/20 transition transform active:scale-95">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>Ajouter une Tâche</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <!-- Active Profile Context Hero Card -->
+    <div id="profile-hero-card" class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-brand-950/40 to-slate-900 border border-brand-500/30 p-5 shadow-xl">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
+        <div class="space-y-1">
+          <div class="flex items-center space-x-2">
+            <span id="hero-profile-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-500/20 text-brand-300 border border-brand-500/40 flex items-center gap-1.5">
+              <span>🎓</span> Profil Actif : Étudiant
+            </span>
+            <span class="text-xs text-slate-400 hidden sm:inline">• Démonstration pédagogique interactive</span>
+          </div>
+          <h2 id="hero-profile-title" class="text-lg sm:text-xl font-bold font-display text-white">
+            Scénario : Semaine de Révision & Partiels Universitaires
+          </h2>
+          <p id="hero-profile-desc" class="text-xs sm:text-sm text-slate-300 max-w-3xl">
+            Comment un étudiant peut prioriser ses révisions majeures avec Eisenhower, isoler les 20% de cours qui font 80% de la note (Pareto), et tenir 4 blocs Pomodoro sans surmenage.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 self-stretch md:self-auto justify-end">
+          <button id="btn-hero-learn-frog" class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 transition">
+            <span>🐸</span>
+            <span>Règle "Eat That Frog"</span>
+          </button>
+          <button id="btn-hero-learn-pareto" class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-brand-300 border border-brand-500/30 text-xs font-semibold flex items-center gap-1.5 transition">
+            <span>⭐</span>
+            <span>Règle 80/20</span>
+          </button>
+        </div>
+      </div>
+      <!-- Background glow effect -->
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 1: Matrice d'Eisenhower & Filtre Pareto 80/20 -->
+    <!-- ========================================================================= -->
+    <section id="section-eisenhower" class="module-section space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">1</span>
+            <h2 class="text-xl sm:text-2xl font-bold font-display text-white">
+              Matrice d'Eisenhower Interactive & Filtre Pareto 80/20
+            </h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            Classez vos actions par Urgence et Importance. Identifiez le <strong>Top 20% à fort impact</strong> pour éviter le piège de l'urgence perpétuelle.
+          </p>
+        </div>
+
+        <!-- Controls: Pareto filter toggle & Add task -->
+        <div class="flex items-center flex-wrap gap-2.5">
+          <!-- Pareto Toggle -->
+          <label class="cursor-pointer flex items-center space-x-2 bg-slate-900 hover:bg-slate-850 px-3 py-2 rounded-xl border border-slate-700 text-xs font-medium transition select-none">
+            <input type="checkbox" id="pareto-filter-toggle" class="sr-only peer">
+            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+            <span class="text-slate-300 peer-checked:text-amber-300 flex items-center gap-1">
+              <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
+              <span>Filtre Pareto (Top 20% Seul)</span>
+            </span>
+          </label>
+
+          <button id="btn-add-task-matrix" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition">
+            <i data-lucide="plus" class="w-4 h-4 text-emerald-400"></i>
+            <span>Nouvelle Action</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4-Quadrant Eisenhower Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="eisenhower-grid">
+        
+        <!-- Q1: Urgent & Important (FAIRE IMMÉDIATEMENT) -->
+        <div class="eisenhower-quadrant bg-slate-900/90 rounded-2xl border-2 border-rose-500/40 p-4 flex flex-col shadow-lg shadow-rose-950/20 relative transition hover:border-rose-500/70" data-quadrant="1">
+          <div class="flex items-start justify-between pb-3 border-b border-rose-500/20 mb-3">
+            <div class="space-y-0.5">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-rose-500/20 text-rose-400 flex items-center justify-center font-black text-xs">Q1</span>
+                <h3 class="font-bold text-white text-base font-display flex items-center gap-1.5">
+                  Urgent & Important
+                  <span class="text-rose-400 font-normal text-xs uppercase tracking-wider font-sans font-bold">— Faire Maintenant</span>
+                </h3>
+              </div>
+              <p class="text-xs text-slate-400">Crises, échéances fatales, problèmes critiques pressants.</p>
+            </div>
+            <span class="quadrant-count px-2 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30" id="count-q1">0</span>
+          </div>
+
+          <!-- Drop target & Task list -->
+          <div class="task-list flex-1 space-y-2 min-h-[140px]" id="list-q1" data-quadrant="1">
+            <!-- Dynamic Tasks injected here -->
+          </div>
+
+          <!-- Quick inline add -->
+          <button class="btn-quick-add-to-q mt-3 text-xs text-rose-400 hover:text-rose-300 py-1.5 px-2 rounded-lg hover:bg-rose-500/10 flex items-center justify-center gap-1 border border-dashed border-rose-500/30 transition" data-target-q="1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>Ajouter une urgence Q1</span>
+          </button>
+        </div>
+
+        <!-- Q2: Non Urgent mais Important (PLANIFIER) - ZONE D'EXCELLENCE -->
+        <div class="eisenhower-quadrant bg-slate-900/90 rounded-2xl border-2 border-emerald-500/40 p-4 flex flex-col shadow-lg shadow-emerald-950/20 relative transition hover:border-emerald-500/70 relative overflow-hidden" data-quadrant="2">
+          <!-- Quality Badge -->
+          <div class="absolute -right-8 top-3 rotate-45 bg-emerald-500 text-slate-950 text-[9px] font-black uppercase tracking-wider px-8 py-0.5 shadow-sm hidden sm:block">
+            Zone d'Excellence
+          </div>
+
+          <div class="flex items-start justify-between pb-3 border-b border-emerald-500/20 mb-3">
+            <div class="space-y-0.5">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black text-xs">Q2</span>
+                <h3 class="font-bold text-white text-base font-display flex items-center gap-1.5">
+                  Important & Non Urgent
+                  <span class="text-emerald-400 font-normal text-xs uppercase tracking-wider font-sans font-bold">— Planifier</span>
+                </h3>
+              </div>
+              <p class="text-xs text-slate-400">Stratégie, révision profonde, santé, formation, prévention.</p>
+            </div>
+            <span class="quadrant-count px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="count-q2">0</span>
+          </div>
+
+          <!-- Drop target & Task list -->
+          <div class="task-list flex-1 space-y-2 min-h-[140px]" id="list-q2" data-quadrant="2">
+            <!-- Dynamic Tasks injected here -->
+          </div>
+
+          <!-- Quick inline add -->
+          <button class="btn-quick-add-to-q mt-3 text-xs text-emerald-400 hover:text-emerald-300 py-1.5 px-2 rounded-lg hover:bg-emerald-500/10 flex items-center justify-center gap-1 border border-dashed border-emerald-500/30 transition" data-target-q="2">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>Ajouter une priorité Q2</span>
+          </button>
+        </div>
+
+        <!-- Q3: Urgent mais Non Important (DÉLÉGUER / RÉDUIRE) -->
+        <div class="eisenhower-quadrant bg-slate-900/90 rounded-2xl border-2 border-amber-500/40 p-4 flex flex-col shadow-lg shadow-amber-950/20 relative transition hover:border-amber-500/70" data-quadrant="3">
+          <div class="flex items-start justify-between pb-3 border-b border-amber-500/20 mb-3">
+            <div class="space-y-0.5">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-xs">Q3</span>
+                <h3 class="font-bold text-white text-base font-display flex items-center gap-1.5">
+                  Urgent & Non Important
+                  <span class="text-amber-400 font-normal text-xs uppercase tracking-wider font-sans font-bold">— Déléguer / Limiter</span>
+                </h3>
+              </div>
+              <p class="text-xs text-slate-400">Interruptions, sollicitations des autres, notifications, réunions stériles.</p>
+            </div>
+            <span class="quadrant-count px-2 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30" id="count-q3">0</span>
+          </div>
+
+          <!-- Drop target & Task list -->
+          <div class="task-list flex-1 space-y-2 min-h-[140px]" id="list-q3" data-quadrant="3">
+            <!-- Dynamic Tasks injected here -->
+          </div>
+
+          <!-- Quick inline add -->
+          <button class="btn-quick-add-to-q mt-3 text-xs text-amber-400 hover:text-amber-300 py-1.5 px-2 rounded-lg hover:bg-amber-500/10 flex items-center justify-center gap-1 border border-dashed border-amber-500/30 transition" data-target-q="3">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>Ajouter une tâche Q3</span>
+          </button>
+        </div>
+
+        <!-- Q4: Ni Urgent Ni Important (ÉLIMINER) -->
+        <div class="eisenhower-quadrant bg-slate-900/90 rounded-2xl border-2 border-slate-700/60 p-4 flex flex-col shadow-lg shadow-slate-950/30 relative transition hover:border-slate-500" data-quadrant="4">
+          <div class="flex items-start justify-between pb-3 border-b border-slate-700/60 mb-3">
+            <div class="space-y-0.5">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-slate-700/40 text-slate-400 flex items-center justify-center font-black text-xs">Q4</span>
+                <h3 class="font-bold text-slate-300 text-base font-display flex items-center gap-1.5">
+                  Ni Urgent Ni Important
+                  <span class="text-slate-400 font-normal text-xs uppercase tracking-wider font-sans font-bold">— Éliminer</span>
+                </h3>
+              </div>
+              <p class="text-xs text-slate-400">Distractions numériques, scroll infini, fuites d'attention, chronophages.</p>
+            </div>
+            <span class="quadrant-count px-2 py-0.5 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700" id="count-q4">0</span>
+          </div>
+
+          <!-- Drop target & Task list -->
+          <div class="task-list flex-1 space-y-2 min-h-[140px]" id="list-q4" data-quadrant="4">
+            <!-- Dynamic Tasks injected here -->
+          </div>
+
+          <!-- Quick inline add -->
+          <button class="btn-quick-add-to-q mt-3 text-xs text-slate-400 hover:text-slate-300 py-1.5 px-2 rounded-lg hover:bg-slate-800 flex items-center justify-center gap-1 border border-dashed border-slate-700 transition" data-target-q="4">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>Ajouter un chronophage Q4</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pedagogical Eisenhower Tip Box -->
+      <div class="bg-slate-900/50 rounded-xl border border-slate-800 p-3.5 text-xs text-slate-300 flex items-center justify-between gap-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-base">💡</span>
+          <span><strong>Principe Clé de Dwight Eisenhower :</strong> <em>"Ce qui est important est rarement urgent, et ce qui est urgent est rarement important."</em> Les champions de la productivité passent <strong>>60% de leur temps en Q2</strong> (Planification proactive).</span>
+        </div>
+        <button id="btn-show-matrix-stats" class="text-xs text-brand-400 hover:text-brand-300 font-medium whitespace-nowrap underline">
+          Statistiques de répartition
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 2: Minuteur Pomodoro Intelligent -->
+    <!-- ========================================================================= -->
+    <section id="section-pomodoro" class="module-section space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-sm">2</span>
+            <h2 class="text-xl sm:text-2xl font-bold font-display text-white">
+              Minuteur Pomodoro Intelligent
+            </h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            Rythmez votre travail : 25 min de concentration pure, 5 min de pause courte, et 15–30 min de pause longue tous les 4 cycles. Relié automatiquement à votre tâche Q1/Q2.
+          </p>
+        </div>
+
+        <!-- Mode Buttons (Focus / Short Break / Long Break) -->
+        <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800" id="pomodoro-mode-switch">
+          <button data-mode="focus" class="pomo-mode-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+            <span>🎯</span> Focus (25m)
+          </button>
+          <button data-mode="short" class="pomo-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+            <span>☕</span> Pause courte (5m)
+          </button>
+          <button data-mode="long" class="pomo-mode-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+            <span>🌴</span> Pause longue (15m)
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Pomodoro Dashboard -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-slate-900/80 rounded-2xl border border-slate-800 p-6 shadow-2xl relative overflow-hidden">
+        
+        <!-- Active Linked Task Banner -->
+        <div class="lg:col-span-12 bg-slate-950/80 rounded-xl border border-slate-800 p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <div id="pomo-quadrant-badge" class="px-2.5 py-1 rounded-md text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase">
+              Q1
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Tâche Eisenhower Associée :</div>
+              <div id="pomo-linked-task-title" class="font-bold text-white text-sm sm:text-base">
+                Aucune tâche liée — Cliquez sur "Travailler" dans la matrice
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 self-end sm:self-auto">
+            <button id="btn-pomo-complete-task" class="px-3 py-1.5 rounded-lg bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1 transition shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+              <i data-lucide="check-check" class="w-4 h-4"></i>
+              <span>Marquer Terminée</span>
+            </button>
+            <button id="btn-select-task-modal" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center gap-1 transition border border-slate-700">
+              <i data-lucide="list" class="w-3.5 h-3.5"></i>
+              <span>Choisir une autre tâche</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Left/Center: Visual Circular Progress Ring & Timer -->
+        <div class="lg:col-span-7 flex flex-col items-center justify-center py-4">
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+            
+            <!-- SVG Progress Ring -->
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 240 240">
+              <!-- Background Circle -->
+              <circle
+                cx="120"
+                cy="120"
+                r="102"
+                stroke="currentColor"
+                stroke-width="12"
+                class="text-slate-800"
+                fill="transparent"
+              />
+              <!-- Animated Progress Circle -->
+              <circle
+                id="pomo-progress-ring"
+                cx="120"
+                cy="120"
+                r="102"
+                stroke="currentColor"
+                stroke-width="12"
+                stroke-linecap="round"
+                class="text-rose-500 transition-all duration-500 ease-linear"
+                fill="transparent"
+                stroke-dasharray="640.88"
+                stroke-dashoffset="0"
+              />
+            </svg>
+
+            <!-- Center Digital Time Display -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span id="pomo-current-mode-label" class="text-xs font-bold uppercase tracking-widest text-rose-400 mb-1">
+                Concentration Pure
+              </span>
+              <span id="pomo-timer-display" class="text-5xl sm:text-6xl font-black font-display tracking-tight text-white tabular-nums drop-shadow-md">
+                25:00
+              </span>
+              <span id="pomo-status-subtext" class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Prêt à démarrer</span>
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Main Controls: Start, Pause, Skip, Reset -->
+          <div class="flex items-center space-x-3 mt-6">
+            <button id="btn-pomo-toggle" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-500/30 flex items-center gap-2 transition transform active:scale-95">
+              <i data-lucide="play" id="pomo-toggle-icon" class="w-5 h-5 fill-white"></i>
+              <span id="pomo-toggle-text">Démarrer le Focus</span>
+            </button>
+            <button id="btn-pomo-skip" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Passer à l'étape suivante">
+              <i data-lucide="skip-forward" class="w-5 h-5"></i>
+            </button>
+            <button id="btn-pomo-reset" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Réinitialiser le chrono">
+              <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            </button>
+            <button id="btn-test-sound" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-amber-300 hover:text-amber-200 border border-slate-700 transition" title="Tester le carillon audio">
+              <i data-lucide="volume-2" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <!-- Shortcut reminder -->
+          <div class="text-[11px] text-slate-500 mt-3 flex items-center gap-2">
+            <span>Raccourcis :</span>
+            <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono">Espace</kbd>
+            <span>Play/Pause</span>
+            <span>•</span>
+            <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono">R</kbd>
+            <span>Reset</span>
+          </div>
+        </div>
+
+        <!-- Right Side: Cycle Tracker & Cirillo Method Instructions -->
+        <div class="lg:col-span-5 bg-slate-950/60 rounded-xl border border-slate-800 p-5 space-y-4">
+          
+          <!-- Cycle Progress -->
+          <div>
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-300 mb-2">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="repeat" class="w-4 h-4 text-brand-400"></i>
+                <span>Cycles du Pomodoro (Objectif : 4)</span>
+              </span>
+              <span id="pomo-cycle-text" class="text-brand-300 font-bold">1 / 4 complétés</span>
+            </div>
+            <!-- Visual Dots for 4 cycles -->
+            <div class="grid grid-cols-4 gap-2" id="pomo-cycle-dots">
+              <div class="pomo-cycle-dot h-3 rounded-full bg-slate-800 border border-slate-700 transition"></div>
+              <div class="pomo-cycle-dot h-3 rounded-full bg-slate-800 border border-slate-700 transition"></div>
+              <div class="pomo-cycle-dot h-3 rounded-full bg-slate-800 border border-slate-700 transition"></div>
+              <div class="pomo-cycle-dot h-3 rounded-full bg-slate-800 border border-slate-700 transition"></div>
+            </div>
+          </div>
+
+          <!-- Scientific Rationale & Rules -->
+          <div class="space-y-2.5 text-xs text-slate-300 pt-2 border-t border-slate-850">
+            <h4 class="font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="brain-circuit" class="w-4 h-4 text-emerald-400"></i>
+              <span>Pourquoi la technique de Francesco Cirillo marche :</span>
+            </h4>
+            <ul class="space-y-1.5 text-slate-400 list-disc list-inside">
+              <li><strong>Hyper-focus 25 min :</strong> Le cerveau humain maintient une attention optimale pendant 20 à 30 minutes sans déperdition cognitive.</li>
+              <li><strong>Zéro multitâche :</strong> Une seule tâche à la fois. Si une idée surgit, notez-la sur un papier pour plus tard.</li>
+              <li><strong>Pause sacrée 5 min :</strong> Interdiction formelle d'ouvrir ses emails ou les réseaux sociaux. Étirez-vous, buvez de l'eau, regardez au loin.</li>
+              <li><strong>Après 4 cycles :</strong> Prendre une grande pause méritée de 15 à 30 minutes pour régénérer la dopamine.</li>
+            </ul>
+          </div>
+
+          <!-- Quick Duration Presets for Class Demo -->
+          <div class="pt-2 border-t border-slate-850 flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-medium">Test rapide démo :</span>
+            <div class="flex items-center space-x-1.5">
+              <button class="btn-demo-duration px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-mono" data-sec="10" title="10 secondes pour tester l'alerte">10 sec</button>
+              <button class="btn-demo-duration px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-mono" data-sec="300" title="5 minutes">5 min</button>
+              <button class="btn-demo-duration px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-mono" data-sec="1500" title="25 minutes">25 min (Standard)</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 3: Assistant Objectifs SMART & Journée Type (Time-Blocking) -->
+    <!-- ========================================================================= -->
+    <section id="section-smart-and-timeblocking" class="module-section space-y-6">
+      <div class="flex items-center space-x-2">
+        <span class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">3 & 4</span>
+        <h2 class="text-xl sm:text-2xl font-bold font-display text-white">
+          Assistant Objectifs SMART & Journée Type (Time-Blocking)
+        </h2>
+      </div>
+
+      <!-- Split Grid: Left SMART Assistant, Right Time-Blocking Timeline -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Module 3 Assistant SMART (5 cols) -->
+        <div class="lg:col-span-5 bg-slate-900/90 rounded-2xl border border-indigo-500/30 p-5 shadow-xl flex flex-col space-y-5">
+          <div class="flex items-start justify-between pb-3 border-b border-indigo-500/20">
+            <div>
+              <h3 class="text-lg font-bold font-display text-white flex items-center gap-2">
+                <i data-lucide="target" class="w-5 h-5 text-indigo-400"></i>
+                <span>Assistant Objectif SMART</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">
+                Validez la rigueur de vos objectifs avec les 5 critères de George T. Doran.
+              </p>
+            </div>
+            <!-- Score Pill -->
+            <div class="text-center px-3 py-1 bg-indigo-500/20 border border-indigo-500/40 rounded-xl">
+              <span class="text-xs text-indigo-300 uppercase font-semibold block">Score SMART</span>
+              <span id="smart-score-pill" class="text-lg font-black text-white font-display">5 / 5</span>
+            </div>
+          </div>
+
+          <!-- SMART Input Form -->
+          <div class="space-y-3.5 flex-1">
+            
+            <!-- S: Spécifique -->
+            <div class="smart-item p-3 rounded-xl bg-slate-950/60 border border-slate-800 transition focus-within:border-indigo-500/60">
+              <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                <label for="smart-s" class="text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-indigo-500/30 text-indigo-300 flex items-center justify-center text-[10px] font-bold">S</span>
+                  <span>Spécifique (Quoi exactement ?)</span>
+                </label>
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 smart-check" id="check-s"></i>
+              </div>
+              <input type="text" id="smart-s" class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none" placeholder="Ex: Réviser le cours de microéconomie et faire 2 annales corrigées">
+            </div>
+
+            <!-- M: Mesurable -->
+            <div class="smart-item p-3 rounded-xl bg-slate-950/60 border border-slate-800 transition focus-within:border-indigo-500/60">
+              <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                <label for="smart-m" class="text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-indigo-500/30 text-indigo-300 flex items-center justify-center text-[10px] font-bold">M</span>
+                  <span>Mesurable (Combien ? Quel chiffre ?)</span>
+                </label>
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 smart-check" id="check-m"></i>
+              </div>
+              <input type="text" id="smart-m" class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none" placeholder="Ex: 4 chapitres complétés, 20 fiches de révision créées">
+            </div>
+
+            <!-- A: Atteignable / Ambitieux -->
+            <div class="smart-item p-3 rounded-xl bg-slate-950/60 border border-slate-800 transition focus-within:border-indigo-500/60">
+              <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                <label for="smart-a" class="text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-indigo-500/30 text-indigo-300 flex items-center justify-center text-[10px] font-bold">A</span>
+                  <span>Atteignable (Compétences & Moyens prêts ?)</span>
+                </label>
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 smart-check" id="check-a"></i>
+              </div>
+              <input type="text" id="smart-a" class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none" placeholder="Ex: Oui, j'ai les cours imprimés et les annales des 3 dernières années">
+            </div>
+
+            <!-- R: Réaliste -->
+            <div class="smart-item p-3 rounded-xl bg-slate-950/60 border border-slate-800 transition focus-within:border-indigo-500/60">
+              <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                <label for="smart-r" class="text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-indigo-500/30 text-indigo-300 flex items-center justify-center text-[10px] font-bold">R</span>
+                  <span>Réaliste (Pertinent par rapport au temps ?)</span>
+                </label>
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 smart-check" id="check-r"></i>
+              </div>
+              <input type="text" id="smart-r" class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none" placeholder="Ex: 5h de créneaux réservés sur mon planning sans interruptions">
+            </div>
+
+            <!-- T: Temporellement défini -->
+            <div class="smart-item p-3 rounded-xl bg-slate-950/60 border border-slate-800 transition focus-within:border-indigo-500/60">
+              <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                <label for="smart-t" class="text-indigo-300 flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-indigo-500/30 text-indigo-300 flex items-center justify-center text-[10px] font-bold">T</span>
+                  <span>Temporel (Date butoir / Échéance précise ?)</span>
+                </label>
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 smart-check" id="check-t"></i>
+              </div>
+              <input type="text" id="smart-t" class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none" placeholder="Ex: Jeudi avant 18h00 pile">
+            </div>
+
+          </div>
+
+          <!-- SMART Result & Action Buttons -->
+          <div class="pt-3 border-t border-slate-800 space-y-2">
+            <div id="smart-feedback-msg" class="text-xs p-2.5 rounded-lg bg-indigo-950/50 border border-indigo-500/30 text-indigo-200 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400 shrink-0"></i>
+              <span>Objectif complet et chirurgicalement défini ! Prêt pour la mise en action.</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button id="btn-convert-smart-to-task" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-brand-600 hover:from-indigo-500 hover:to-brand-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 transition">
+                <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
+                <span>Injecter dans Eisenhower (Q2 Prioritaire)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Module 3 Journée Type Time-Blocking & Eat That Frog (7 cols) -->
+        <div class="lg:col-span-7 bg-slate-900/90 rounded-2xl border border-amber-500/30 p-5 shadow-xl flex flex-col space-y-4">
+          <div class="flex items-start justify-between pb-3 border-b border-amber-500/20">
+            <div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xl">🐸</span>
+                <h3 class="text-lg font-bold font-display text-white">
+                  Journée Type Optimisée & Time-Blocking
+                </h3>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">
+                Alignez votre énergie avec la chronobiologie : <strong>"Avalez le crapaud" (Eat That Frog)</strong> le matin, déconnectez à midi, Pomodoro l'après-midi, et 10 min de bilan le soir.
+              </p>
+            </div>
+            <button id="btn-reset-timeline-checks" class="text-xs text-slate-400 hover:text-white transition flex items-center gap-1" title="Réinitialiser les étapes de la journée">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              <span>Reset jour</span>
+            </button>
+          </div>
+
+          <!-- Timeline Container (5 Slots) -->
+          <div class="space-y-3 flex-1" id="timeline-container">
+            
+            <!-- 1. Matin: Eat That Frog -->
+            <div class="timeline-slot p-3.5 rounded-xl bg-slate-950/70 border border-amber-500/40 transition hover:border-amber-400" data-slot="matin">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    🐸
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">08h00 — 12h00 • Matin</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Eat That Frog</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mt-0.5" id="timeline-matin-title">
+                      La tâche la plus redoutée et à plus fort impact
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-1" id="timeline-matin-desc">
+                      Volonté maximale. Zéro notification, téléphone en mode avion. Réviser le sujet le plus complexe avant que la fatigue mentale ne s'installe.
+                    </p>
+                  </div>
+                </div>
+                <input type="checkbox" class="timeline-check w-4 h-4 mt-1 rounded text-amber-500 focus:ring-amber-500 border-slate-700 bg-slate-900 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- 2. Midi: Vraie Pause & Déconnexion -->
+            <div class="timeline-slot p-3.5 rounded-xl bg-slate-950/70 border border-emerald-500/30 transition hover:border-emerald-400" data-slot="midi">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    🥗
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">12h00 — 13h30 • Midi</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Déconnexion Totale</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mt-0.5">
+                      Vraie pause déjeuner & Aération de l'esprit
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-1">
+                      Repas équilibré loin des écrans. Marche de 15 minutes à la lumière naturelle pour réinitialiser le rythme circadien.
+                    </p>
+                  </div>
+                </div>
+                <input type="checkbox" class="timeline-check w-4 h-4 mt-1 rounded text-emerald-500 focus:ring-emerald-500 border-slate-700 bg-slate-900 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- 3. Après-midi: Cycles Pomodoro & Actions Collaboratives -->
+            <div class="timeline-slot p-3.5 rounded-xl bg-slate-950/70 border border-rose-500/30 transition hover:border-rose-400" data-slot="apres-midi">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    ⚡
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">13h30 — 18h00 • Après-Midi</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Pomodoro Rythmé</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mt-0.5">
+                      3 à 4 blocs Pomodoro ciblés + Tâches annexes
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-1">
+                      Exercices d'application, travaux de groupe, réponses aux messages urgents (Q3) groupées en un seul lot (batching).
+                    </p>
+                  </div>
+                </div>
+                <input type="checkbox" class="timeline-check w-4 h-4 mt-1 rounded text-rose-500 focus:ring-rose-500 border-slate-700 bg-slate-900 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- 4. Soirée: Loisirs & Planification 10 min de demain -->
+            <div class="timeline-slot p-3.5 rounded-xl bg-slate-950/70 border border-purple-500/30 transition hover:border-purple-400" data-slot="soiree">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    🌙
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">18h00 — 22h30 • Soirée</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">Loisirs + Rituel Clé</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mt-0.5">
+                      Détente, sport & Rituel sacré de 10 min pour demain
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-1">
+                      <strong>Le rituel d'or :</strong> 10 minutes avant de couper pour noter les 3 tâches prioritaires du lendemain. Votre cerveau dormira l'esprit libéré.
+                    </p>
+                  </div>
+                </div>
+                <input type="checkbox" class="timeline-check w-4 h-4 mt-1 rounded text-purple-500 focus:ring-purple-500 border-slate-700 bg-slate-900 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- 5. Nuit: Sommeil Réparateur -->
+            <div class="timeline-slot p-3.5 rounded-xl bg-slate-950/70 border border-blue-500/30 transition hover:border-blue-400" data-slot="nuit">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    💤
+                  </div>
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">22h30 — 07h30 • Nuit</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">7–8h Sommeil</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mt-0.5">
+                      Consolidation de la mémoire et régénération cellulaire
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-1">
+                      Le sommeil est la condition physiologique sine qua non de la mémoire et de l'attention. Pas d'écrans 30 min avant de dormir.
+                    </p>
+                  </div>
+                </div>
+                <input type="checkbox" class="timeline-check w-4 h-4 mt-1 rounded text-blue-500 focus:ring-blue-500 border-slate-700 bg-slate-900 cursor-pointer">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: Ajouter / Modifier une Tâche -->
+  <!-- ========================================================================= -->
+  <div id="modal-task" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+    <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl w-full max-w-lg overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-200">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="text-lg font-bold font-display text-white flex items-center gap-2" id="modal-task-title">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-brand-400"></i>
+          <span>Ajouter une Action</span>
+        </h3>
+        <button id="btn-modal-close" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="form-task" class="p-5 space-y-4 text-xs">
+        <input type="hidden" id="task-id">
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1" for="task-title-input">Titre de l'action *</label>
+          <input type="text" id="task-title-input" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-500" placeholder="Ex: Réviser chapitre 4 de Biologie cellulaire">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1" for="task-quadrant-select">Cadran Eisenhower *</label>
+            <select id="task-quadrant-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+              <option value="1">Q1 : Urgent & Important (Faire)</option>
+              <option value="2" selected>Q2 : Non urgent & Important (Planifier)</option>
+              <option value="3">Q3 : Urgent & Non important (Déléguer)</option>
+              <option value="4">Q4 : Ni l'un ni l'autre (Éliminer)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1" for="task-pomos-input">Estimation Pomodoros (25m)</label>
+            <input type="number" id="task-pomos-input" min="1" max="12" value="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1" for="task-notes-input">Détails / Contexte ou Deadline</label>
+          <input type="text" id="task-notes-input" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500" placeholder="Ex: Pour le cours de M. Dupont, coefficient 3">
+        </div>
+
+        <!-- Pareto 80/20 Star Option -->
+        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
+          <div class="space-y-0.5">
+            <span class="font-bold text-amber-300 flex items-center gap-1.5">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
+              <span>Top 20% Pareto (Haute Valeur Ajoutée)</span>
+            </span>
+            <p class="text-[11px] text-amber-200/80">Cette tâche fait-elle partie des 20% qui génèrent 80% des résultats ou de votre note ?</p>
+          </div>
+          <input type="checkbox" id="task-pareto-input" class="w-4 h-4 rounded text-amber-500 focus:ring-amber-500 bg-slate-900 border-slate-700 cursor-pointer">
+        </div>
+
+        <div class="pt-2 flex items-center justify-end space-x-2">
+          <button type="button" id="btn-modal-cancel" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">
+            Annuler
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold shadow-md shadow-brand-600/20 transition">
+            Enregistrer la tâche
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: Guide Méthodologique & Pédagogique (Live Classroom) -->
+  <!-- ========================================================================= -->
+  <div id="modal-guide" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+    <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+        <div>
+          <h3 class="text-lg font-bold font-display text-white flex items-center gap-2">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-brand-400"></i>
+            <span>Guide Pédagogique — Les Piliers de la Gestion du Temps</span>
+          </h3>
+          <p class="text-xs text-slate-400">Support d'animation pour l'exposé Study Skill de Yassmine Guizani</p>
+        </div>
+        <button id="btn-guide-close" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-5 text-xs text-slate-300 leading-relaxed">
+        
+        <!-- Pillar 1 -->
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+            <span>1. La Matrice d'Eisenhower (Dwight D. Eisenhower)</span>
+          </h4>
+          <p>
+            Elle distingue deux notions souvent confondues : <strong>l'urgence</strong> (qui réclame une attention immédiate mais n'apporte pas forcément de valeur) et <strong>l'importance</strong> (qui contribue à vos objectifs à long terme).
+          </p>
+          <p class="text-slate-400">
+            <strong>Le piège moderne :</strong> Être constamment dans Q1 (urgence absolue) ou Q3 (urgences des autres), ce qui mène au burnout. Le secret de la réussite réside dans le <strong>Q2</strong> (important mais non urgent) : planifier avant la crise.
+          </p>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+            <span>2. Le Principe de Pareto (Règle des 80/20 — Vilfredo Pareto)</span>
+          </h4>
+          <p>
+            80% des effets proviennent de 20% des causes. Dans les études et le travail : <strong>20% des chapitres ou actions clés apportent 80% des résultats ou points aux examens</strong>.
+          </p>
+          <p class="text-slate-400">
+            Activez le filtre Pareto pour refocaliser votre énergie sur ce noyau vital avant de vous perdre dans les détails secondaires.
+          </p>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2">
+            <span>3. La Méthode Pomodoro (Francesco Cirillo)</span>
+          </h4>
+          <p>
+            Un travail rythmé en blocs indivisibles de 25 minutes protège le cerveau de l'épuisement tout en combattant la loi de Parkinson (une tâche s'étale pour occuper tout le temps disponible).
+          </p>
+          <p class="text-slate-400">
+            Durant les 5 minutes de pause, ne consultez aucun écran. Laissez le cerveau consolider les informations acquises.
+          </p>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-indigo-400 flex items-center gap-2">
+            <span>4. Les Objectifs SMART (George T. Doran)</span>
+          </h4>
+          <p>
+            Un objectif flou ("Je vais réviser aujourd'hui") conduit immanquablement à la procrastination. Un objectif SMART transforme une intention vague en une trajectoire infaillible et mesurable.
+          </p>
+        </div>
+
+        <!-- Pillar 5 -->
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-blue-400 flex items-center gap-2">
+            <span>5. "Eat That Frog" & Chronobiologie (Brian Tracy)</span>
+          </h4>
+          <p>
+            Mark Twain disait : <em>"Mangez un crapaud vivant dès le matin, et rien de pire ne pourra vous arriver pour le restant de la journée."</em>
+          </p>
+          <p class="text-slate-400">
+            La tâche la plus redoutée doit être accomplie à 8h ou 9h du matin, quand vos réserves de glucose cérébral et de volonté sont intactes.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-950/50 flex justify-end">
+        <button id="btn-guide-ok" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition">
+          Fermer et Pratiquer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-850 mt-12 text-slate-400 text-xs text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div>
+      <p class="font-semibold text-slate-300">
+        ChronoMaster — Outil de Démonstration en Direct
+      </p>
+      <p class="text-slate-500 mt-0.5">
+        Conçu pour la présentation Study Skill de <strong class="text-brand-300">Yassmine Guizani</strong> • Matrice Eisenhower, Pareto 80/20, Pomodoro & SMART
+      </p>
+    </div>
+    <div class="flex items-center space-x-3 text-slate-400">
+      <span class="inline-flex items-center gap-1">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>Stockage Local Automatique</span>
+      </span>
+      <span>•</span>
+      <span>100% Fonctionnel Hors-ligne</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="sample_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+/* =========================================================================
+   ChronoMaster — Study Skill | Yassmine Guizani
+   Feuille de style moderne, animations & responsive
+   ========================================================================= */
+
+/* Typography & Base */
+body {
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.6);
+}
+
+/* Profile Selector Buttons */
+.profile-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid transparent;
+}
+.profile-btn:hover {
+  color: #f8fafc;
+  background: rgba(30, 41, 59, 0.6);
+}
+.profile-btn.active {
+  background: #8b5cf6;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Navigation Tabs */
+.nav-tab {
+  background: rgba(30, 41, 59, 0.5);
+  color: #94a3b8;
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+.nav-tab:hover {
+  color: #ffffff;
+  background: rgba(51, 65, 85, 0.8);
+}
+.nav-tab.active {
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+/* Task Cards */
+.task-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  border-radius: 0.875rem;
+  padding: 0.75rem 0.875rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: grab;
+  user-select: none;
+}
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+.task-card:active {
+  cursor: grabbing;
+}
+.task-card.dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+.task-card.completed {
+  opacity: 0.6;
+  text-decoration: line-through;
+  background: rgba(15, 23, 42, 0.4);
+}
+.task-card.completed .task-title {
+  text-decoration: line-through;
+  color: #64748b;
+}
+
+/* Pareto Highlight Card */
+.task-card.is-pareto {
+  border-left: 4px solid #f59e0b;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);
+}
+
+/* Drag over quadrant effect */
+.task-list.drag-over {
+  background: rgba(139, 92, 246, 0.1);
+  border: 2px dashed #8b5cf6;
+  border-radius: 0.75rem;
+}
+
+/* Pomodoro Mode Switch Buttons */
+.pomo-mode-btn {
+  color: #94a3b8;
+}
+.pomo-mode-btn:hover {
+  color: #ffffff;
+}
+.pomo-mode-btn.active {
+  background: rgba(244, 63, 94, 0.25);
+  color: #fda4af;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.2);
+}
+
+/* Pomodoro Cycle Dots */
+.pomo-cycle-dot.completed {
+  background: #f43f5e;
+  border-color: #fb7185;
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+}
+
+/* SMART Checklist Input focus */
+.smart-item:focus-within {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+/* Timeline slots */
+.timeline-slot {
+  transition: all 0.2s ease;
+}
+.timeline-slot:hover {
+  transform: translateX(3px);
+}
+.timeline-slot.checked {
+  opacity: 0.65;
+  background: rgba(15, 23, 42, 0.4);
+  border-color: rgba(51, 65, 85, 0.4);
+}
+.timeline-slot.checked h4 {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+/* Light Mode Overrides */
+html:not(.dark) {
+  background-color: #f8fafc;
+}
+html:not(.dark) body {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+html:not(.dark) header {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #e2e8f0;
+}
+html:not(.dark) .bg-slate-900,
+html:not(.dark) .bg-slate-900\/90,
+html:not(.dark) .bg-slate-900\/80,
+html:not(.dark) .bg-slate-900\/50 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .bg-slate-950,
+html:not(.dark) .bg-slate-950\/80,
+html:not(.dark) .bg-slate-950\/70,
+html:not(.dark) .bg-slate-950\/60,
+html:not(.dark) .bg-slate-950\/40 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) .text-white {
+  color: #0f172a !important;
+}
+html:not(.dark) .text-slate-200,
+html:not(.dark) .text-slate-300 {
+  color: #334155 !important;
+}
+html:not(.dark) .text-slate-400 {
+  color: #64748b !important;
+}
+html:not(.dark) .border-slate-800,
+html:not(.dark) .border-slate-700 {
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .task-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+html:not(.dark) .task-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+html:not(.dark) input,
+html:not(.dark) select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* =========================================================================
+   PRINT STYLES FOR SUMMARY REPORT (Bilan PDF)
+   ========================================================================= */
+@media print {
+  /* Hide interactive elements, header toggles, buttons */
+  header,
+  .profile-btn,
+  #pareto-filter-toggle,
+  .btn-quick-add-to-q,
+  #pomodoro-mode-switch,
+  #btn-pomo-toggle,
+  #btn-pomo-skip,
+  #btn-pomo-reset,
+  #btn-test-sound,
+  .btn-demo-duration,
+  #btn-convert-smart-to-task,
+  footer,
+  .nav-tab,
+  #btn-quick-add-task,
+  #modal-task,
+  #modal-guide {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    padding: 0 !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    space-y: 1.5rem !important;
+  }
+
+  /* Force display of all modules for the report */
+  .module-section {
+    display: block !important;
+    page-break-inside: avoid;
+    margin-bottom: 2rem;
+  }
+
+  /* Printable Report Header */
+  body::before {
+    content: "ChronoMaster — Rapport Synthétique de Productivité | Yassmine Guizani (Study Skill)";
+    display: block;
+    font-size: 16pt;
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .eisenhower-quadrant,
+  .smart-item,
+  .timeline-slot {
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    color: #000 !important;
+    break-inside: avoid;
+  }
+
+  .text-white, .text-slate-200, .text-slate-300, .text-slate-400 {
+    color: #000 !important;
+  }
+}
