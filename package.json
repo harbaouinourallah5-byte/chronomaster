@@ -4,6 +4,6 @@
   "private": true,
   "description": "ChronoMaster — Study Skill Yassmine Guizani",
   "scripts": {
-    "build": "echo 'Static build ready'"
+    "build": "node build.js"
   }
 }
